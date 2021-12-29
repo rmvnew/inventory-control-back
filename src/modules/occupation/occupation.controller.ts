@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, Put } from '@nestjs/common';
 import { OccupationService } from './occupation.service';
 import { CreateOccupationDto } from './dto/create-occupation.dto';
 import { UpdateOccupationDto } from './dto/update-occupation.dto';
@@ -13,7 +13,7 @@ export class OccupationController {
   constructor(private readonly occupationService: OccupationService) { }
 
   @Post()
-  create(@Body() createOccupationDto: CreateOccupationDto) {
+  async create(@Body() createOccupationDto: CreateOccupationDto):Promise<Occupation> {
     return this.occupationService.create(createOccupationDto);
   }
 
@@ -29,17 +29,17 @@ export class OccupationController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string):Promise<Occupation> {
     return this.occupationService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOccupationDto: UpdateOccupationDto) {
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() updateOccupationDto: UpdateOccupationDto):Promise<Occupation> {
     return this.occupationService.update(+id, updateOccupationDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.occupationService.remove(+id);
   }
 }
