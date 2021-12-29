@@ -3,6 +3,7 @@ import { OccupationModule } from './modules/occupation/occupation.module';
 import { DepartmentModule } from './modules/department/department.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ProjectModule } from './modules/project/project.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true
     }),
+    ProjectModule,
   ],
     
   controllers: [],
