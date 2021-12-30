@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
+import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateOccupationDto } from './dto/create-occupation.dto';
 import { FilterOccupation } from './dto/filter.occupation.pagination';
@@ -19,6 +20,8 @@ export class OccupationService {
   async create(createOccupationDto: CreateOccupationDto): Promise<Occupation> {
 
     const occupation = this.occRepository.create(createOccupationDto)
+
+    occupation.name = Utils.getInstance().getValidName(occupation.name)
 
     const isRegistered = await this.findByName(occupation.name)
 

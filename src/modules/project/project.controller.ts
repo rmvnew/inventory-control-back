@@ -8,7 +8,7 @@ import { Project } from './entities/project.entity';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Project')
-@Controller('project')
+@Controller('api/v1/project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) { }
 

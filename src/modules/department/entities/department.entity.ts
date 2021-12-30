@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Client } from "src/modules/client/entities/client.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity('department')
@@ -21,5 +22,10 @@ export class Department {
 
     @UpdateDateColumn()
     updateAt: string
+    
+
+    @OneToMany(()=>Client, client=>client.department)
+    client:Client
+
 
 }

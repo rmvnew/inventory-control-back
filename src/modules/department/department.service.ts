@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
+import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { FilterDepartment } from './dto/filter.department.pagination';
@@ -19,6 +20,7 @@ export class DepartmentService {
   async create(createDepartmentDto: CreateDepartmentDto) {
 
     const department = this.departmentRepository.create(createDepartmentDto)
+    department.name = Utils.getInstance().getValidName(department.name)
 
     const isRegistered = await this.findByName(department.name)
 

@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
+import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { FilterProject } from './dto/filter.project.pagination';
@@ -19,6 +20,7 @@ export class ProjectService {
   async create(createProjectDto: CreateProjectDto) {
 
     const project = this.projectRepository.create(createProjectDto)
+    project.name = Utils.getInstance().getValidName(project.name)
 
     const isRegistered = await this.findByName(project.name)
 
