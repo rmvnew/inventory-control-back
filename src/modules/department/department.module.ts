@@ -9,6 +9,7 @@ import { Department } from './entities/department.entity';
     TypeOrmModule.forFeature([Department])
   ],
   controllers: [DepartmentController],
-  providers: [DepartmentService]
+  providers: [DepartmentService],
+  exports:[DepartmentService]
 })
 export class DepartmentModule {}

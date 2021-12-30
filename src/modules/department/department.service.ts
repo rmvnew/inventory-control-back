@@ -21,6 +21,7 @@ export class DepartmentService {
 
     const department = this.departmentRepository.create(createDepartmentDto)
     department.name = Utils.getInstance().getValidName(department.name)
+    department.manager = Utils.getInstance().getValidName(department.manager)
 
     const isRegistered = await this.findByName(department.name)
 
@@ -34,6 +35,7 @@ export class DepartmentService {
   async findAll(filter: FilterDepartment): Promise<Pagination<Department>> {
     const { name, orderBy, sort } = filter
     const queryBuilder = this.departmentRepository.createQueryBuilder('inf')
+    .leftJoinAndSelect('inf.client','client')
 
     if (name) {
       return paginate<Department>(
@@ -77,6 +79,9 @@ export class DepartmentService {
       id_department: id,
       ...updateDepartmentDto
     })
+
+    department.name = Utils.getInstance().getValidName(department.name)
+    department.manager = Utils.getInstance().getValidName(department.manager)
 
     await this.departmentRepository.save(department)
 

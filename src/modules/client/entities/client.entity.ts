@@ -7,7 +7,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Up
 export class Client {
 
     @PrimaryGeneratedColumn()
-    id_project: number
+    id_client: number
 
     @Column()
     name: string
