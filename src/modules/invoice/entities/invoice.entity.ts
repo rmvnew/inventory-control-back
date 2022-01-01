@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from "typeorm";
+import { Product } from "src/modules/product/entities/product.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from "typeorm";
 
 
 @Entity('invoice')
@@ -30,4 +31,7 @@ export class Invoice {
 
     @UpdateDateColumn()
     updateAt: string
+
+    @OneToMany(()=>Product, product=>product.invoice)
+    product:Product[]
 }
