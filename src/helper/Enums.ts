@@ -10,7 +10,7 @@ export enum SortingType {
 
 export enum UserProfile {
     ADMIN = 'ADMIN',
-    ATENDENTE = 'ATENDENTE'
+    USUARIO = 'USUARIO'
 }
 
 export enum ProductCondition {

@@ -8,6 +8,7 @@ import { ClientModule } from './modules/client/client.module';
 import { InvoiceModule } from './modules/invoice/invoice.module';
 import { ProductModule } from './modules/product/product.module';
 import { CategoryModule } from './modules/category/category.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { CategoryModule } from './modules/category/category.module';
     InvoiceModule,
     ProductModule,
     CategoryModule,
+    UserModule,
   ],
     
   controllers: [],
