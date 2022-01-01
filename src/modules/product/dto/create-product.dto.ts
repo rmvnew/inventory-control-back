@@ -8,6 +8,10 @@ export class CreateProductDto {
     @ApiProperty()
     @IsNumber()
     id_invoice: number
+    
+    @ApiProperty()
+    @IsNumber()
+    id_category: number
 
     @ApiProperty()
     @IsString()

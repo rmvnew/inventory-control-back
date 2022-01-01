@@ -1,3 +1,4 @@
+import { Category } from "src/modules/category/entities/category.entity";
 import { Invoice } from "src/modules/invoice/entities/invoice.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -52,5 +53,8 @@ export class Product {
 
     @ManyToOne(()=>Invoice, invoice=> invoice.product)
     invoice:Invoice
+
+    @ManyToOne(()=>Category,category=>category.product)
+    category:Category
 
 }

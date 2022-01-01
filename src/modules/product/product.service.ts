@@ -4,6 +4,7 @@ import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
+import { CategoryService } from '../category/category.service';
 import { InvoiceService } from '../invoice/invoice.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProduct } from './dto/filter.product.pagination';
@@ -16,12 +17,13 @@ export class ProductService {
   constructor(
     @InjectRepository(Product)
     private readonly prodRepository: Repository<Product>,
-    private invoiceService:InvoiceService
+    private invoiceService: InvoiceService,
+    private categoryService: CategoryService
   ) { }
 
   async create(createProductDto: CreateProductDto) {
 
-    const { id_invoice } = createProductDto
+    const { id_invoice, id_category } = createProductDto
 
     const product = this.prodRepository.create(createProductDto)
 
@@ -33,10 +35,13 @@ export class ProductService {
       throw new BadRequestException('O produto já esta cadastrado!!')
     }
 
-    if(id_invoice){
+    if (id_invoice) {
       product.invoice = await this.invoiceService.findOne(id_invoice)
     }
 
+    if (id_category) {
+      product.category = await this.categoryService.findOne(id_category)
+    }
 
     return this.prodRepository.save(product)
   }
@@ -47,7 +52,8 @@ export class ProductService {
 
     const { orderBy, sort, name, barcode } = filter
     const queryBuilder = this.prodRepository.createQueryBuilder('inf')
-    .leftJoinAndSelect('inf.invoice','invoice')
+      .leftJoinAndSelect('inf.invoice', 'invoice')
+      .leftJoinAndSelect('inf.category','category')
 
 
     if (name) {
@@ -89,7 +95,7 @@ export class ProductService {
 
   async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
 
-    const { name,id_invoice } = updateProductDto
+    const { name, id_invoice, id_category } = updateProductDto
 
     const isRegistered = this.findOne(id)
     if (!isRegistered) {
@@ -105,8 +111,12 @@ export class ProductService {
       product.name = Utils.getInstance().getValidName(product.name)
     }
 
-    if(id_invoice){
+    if (id_invoice) {
       product.invoice = await this.invoiceService.findOne(id_invoice)
+    }
+
+    if (id_category) {
+      product.category = await this.categoryService.findOne(id_category)
     }
 
     await this.prodRepository.save(product)

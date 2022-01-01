@@ -7,6 +7,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { ClientModule } from './modules/client/client.module';
 import { InvoiceModule } from './modules/invoice/invoice.module';
 import { ProductModule } from './modules/product/product.module';
+import { CategoryModule } from './modules/category/category.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ProductModule } from './modules/product/product.module';
     ClientModule,
     InvoiceModule,
     ProductModule,
+    CategoryModule,
   ],
     
   controllers: [],
