@@ -1,10 +1,26 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength } from "class-validator"
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, isString, IsString, MaxLength, MinLength } from "class-validator"
 import { UserProfile } from "src/helper/Enums"
+import { CreatePhoneDto } from "src/modules/phone/dto/create-phone.dto"
 
 
 
 export class CreateUserDto {
+
+
+    @ApiProperty()
+    @IsOptional()
+    phone:CreatePhoneDto
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    id_occupation: number
+    
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsNumber()
+    id_department: number
 
     @ApiProperty()
     @IsString()
@@ -26,7 +42,7 @@ export class CreateUserDto {
     password:string
 
     @ApiProperty()
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
     register:string
 

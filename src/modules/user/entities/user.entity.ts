@@ -1,5 +1,8 @@
 import { UserProfile } from "src/helper/Enums";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Department } from "src/modules/department/entities/department.entity";
+import { Occupation } from "src/modules/occupation/entities/occupation.entity";
+import { Phone } from "src/modules/phone/entities/phone.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity('user')
@@ -31,5 +34,15 @@ export class User {
 
     @UpdateDateColumn()
     updateAt: string
+
+    @OneToOne(()=> Phone, phone => phone.user,{eager:true})
+    @JoinColumn()
+    phone : Phone
+
+    @ManyToOne(()=> Department, department => department.user)
+    department:Department
+
+    @ManyToOne(()=> Occupation, occupation=>occupation.user)
+    occupation:Occupation
 
 }

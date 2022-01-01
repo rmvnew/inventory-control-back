@@ -12,10 +12,10 @@ async function bootstrap() {
   }))
 
   const config = new DocumentBuilder()
-    .setTitle('Tigon Backend')
-    .setDescription('Api Tigon ')
+    .setTitle('Inventory Control')
+    .setDescription('Api Inventory ')
     .setVersion('1.0')
-    .addTag('Tigon')
+    .addTag('Inventory Control')
     .addBearerAuth({ 
       // I was also testing it without prefix 'Bearer ' before the JWT
       description: `[just text field] Please enter token in following format: Bearer <JWT>`,

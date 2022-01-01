@@ -9,6 +9,7 @@ import { InvoiceModule } from './modules/invoice/invoice.module';
 import { ProductModule } from './modules/product/product.module';
 import { CategoryModule } from './modules/category/category.module';
 import { UserModule } from './modules/user/user.module';
+import { PhoneModule } from './modules/phone/phone.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UserModule } from './modules/user/user.module';
     ProductModule,
     CategoryModule,
     UserModule,
+    PhoneModule,
   ],
     
   controllers: [],

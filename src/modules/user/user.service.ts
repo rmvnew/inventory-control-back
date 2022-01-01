@@ -4,6 +4,9 @@ import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
+import { DepartmentService } from '../department/department.service';
+import { OccupationService } from '../occupation/occupation.service';
+import { PhoneService } from '../phone/phone.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUser } from './dto/filter.user.pagination';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,10 +17,15 @@ export class UserService {
 
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    private phoneService: PhoneService,
+    private occupationService: OccupationService,
+    private departmentService: DepartmentService
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+
+    const { phone, id_department, id_occupation } = createUserDto
 
     const user = this.userRepository.create(createUserDto)
 
@@ -29,7 +37,12 @@ export class UserService {
       throw new BadRequestException('Usuário já registrado!')
     }
 
+    user.phone = await this.phoneService.create(phone)
+
     user.password = await Utils.getInstance().encryptPassword(user.password)
+
+    user.department = await this.departmentService.findOne(id_department)
+    user.occupation = await this.occupationService.findOne(id_occupation)
 
     return this.userRepository.save(user)
   }
@@ -37,6 +50,9 @@ export class UserService {
   async findAll(filter: FilterUser): Promise<Pagination<User>> {
     const { name, orderBy, sort } = filter
     const queryBuilder = this.userRepository.createQueryBuilder('inf')
+      .leftJoinAndSelect('inf.phone', 'phone')
+      .leftJoinAndSelect('inf.occupation','occupation')
+      .leftJoinAndSelect('inf.department','department')
 
     if (name) {
       return paginate<User>(

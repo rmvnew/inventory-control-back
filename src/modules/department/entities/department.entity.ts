@@ -1,4 +1,5 @@
 import { Client } from "src/modules/client/entities/client.entity";
+import { User } from "src/modules/user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
@@ -26,6 +27,9 @@ export class Department {
 
     @OneToMany(()=>Client, client=>client.department)
     client:Client
+    
+    @OneToMany(()=>User, user=> user.department)
+    user: User;
 
 
 }
