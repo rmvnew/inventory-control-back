@@ -1,6 +1,7 @@
+import { ActivityControl } from "src/modules/activity-control/entities/activity-control.entity";
 import { Category } from "src/modules/category/entities/category.entity";
 import { Invoice } from "src/modules/invoice/entities/invoice.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity('product')
@@ -13,34 +14,34 @@ export class Product {
     name: string
 
     @Column()
-    barcode:string
-    
-    @Column()
-    part_number:string
+    barcode: string
 
     @Column()
-    model:string
+    part_number: string
 
     @Column()
-    condition:string
+    model: string
 
     @Column()
-    quantity:number
+    condition: string
 
     @Column()
-    minimum_quantity:number
+    quantity: number
+
+    @Column()
+    minimum_quantity: number
 
     @Column('decimal', { precision: 7, scale: 2 })
-    value:number
+    value: number
 
     @Column()
-    responsible:string
+    responsible: string
 
     @Column()
-    location:string
+    location: string
 
     @Column()
-    institute_code:string
+    institute_code: string
 
     @Column()
     isActive: boolean
@@ -51,10 +52,13 @@ export class Product {
     @UpdateDateColumn()
     updateAt: string
 
-    @ManyToOne(()=>Invoice, invoice=> invoice.product)
-    invoice:Invoice
+    @ManyToOne(() => Invoice, invoice => invoice.product)
+    invoice: Invoice
 
-    @ManyToOne(()=>Category,category=>category.product)
-    category:Category
+    @ManyToOne(() => Category, category => category.product)
+    category: Category
+
+    @OneToMany(() => ActivityControl, activity => activity.client)
+    activity: ActivityControl[]
 
 }

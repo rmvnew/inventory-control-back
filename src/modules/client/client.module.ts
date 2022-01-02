@@ -13,6 +13,7 @@ import { DepartmentModule } from '../department/department.module';
     DepartmentModule
   ],
   controllers: [ClientController],
-  providers: [ClientService]
+  providers: [ClientService],
+  exports:[ClientService]
 })
 export class ClientModule {}

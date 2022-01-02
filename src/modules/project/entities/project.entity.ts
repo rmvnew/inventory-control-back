@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ActivityControl } from "src/modules/activity-control/entities/activity-control.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 
@@ -19,5 +20,8 @@ export class Project {
 
     @UpdateDateColumn()
     updateAt: string
+
+    @OneToMany(() => ActivityControl, activity => activity.client)
+    activity: ActivityControl[]
 
 }

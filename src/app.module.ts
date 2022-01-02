@@ -10,6 +10,7 @@ import { ProductModule } from './modules/product/product.module';
 import { CategoryModule } from './modules/category/category.module';
 import { UserModule } from './modules/user/user.module';
 import { PhoneModule } from './modules/phone/phone.module';
+import { ActivityControlModule } from './modules/activity-control/activity-control.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { PhoneModule } from './modules/phone/phone.module';
     CategoryModule,
     UserModule,
     PhoneModule,
+    ActivityControlModule,
   ],
     
   controllers: [],
