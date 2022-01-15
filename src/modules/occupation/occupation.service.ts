@@ -72,16 +72,28 @@ export class OccupationService {
   async findByName(name: string): Promise<Occupation> {
 
     const occ = this.occRepository.createQueryBuilder('inf')
-    .where('inf.isActive = true')
+    .where('inf.name = :name',{name})
+    .andWhere('inf.isActive = true')
     .getOne()
 
     return occ
   }
 
+  async findOccupationActive(id:number):Promise<Occupation>{
+
+    const occ = this.occRepository.createQueryBuilder('inf')
+    .where('inf.id_occupation = :id_occupation',{id_occupation:id})
+    .andWhere('inf.isActive = true')
+    .getOne()
+
+    return occ
+
+  }
+
   async update(id: number, updateOccupationDto: UpdateOccupationDto): Promise<Occupation> {
 
 
-    const occ = await this.findOne(id)
+    const occ = await this.findOccupationActive(id)
     if (!occ) {
       throw new NotFoundException('Ocupação não encontrada!')
     }
