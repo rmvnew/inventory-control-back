@@ -29,31 +29,37 @@ export class DepartmentService {
       throw new BadRequestException('O departamento já esta cadastrado!!')
     }
 
+    department.isActive = true
+
     return this.departmentRepository.save(department)
   }
 
   async findAll(filter: FilterDepartment): Promise<Pagination<Department>> {
     const { name, orderBy, sort } = filter
     const queryBuilder = this.departmentRepository.createQueryBuilder('inf')
-    .leftJoinAndSelect('inf.client','client')
+      .leftJoinAndSelect('inf.client', 'client')
 
     if (name) {
       return paginate<Department>(
-        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` }), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` })
+          .andWhere('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.name', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     }
 
@@ -65,12 +71,25 @@ export class DepartmentService {
   }
 
   async findByName(name: string): Promise<Department> {
-    return this.departmentRepository.findOne({ name: name })
+    const department = this.departmentRepository.createQueryBuilder('inf')
+      .where('inf.name = :name', { name })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return department
+  }
+
+  async findActiveDepartment(id: number) {
+    const department = this.departmentRepository.createQueryBuilder('inf')
+      .where('inf.id_department = :id_department', { id_department: id })
+      .andWhere('inf.isActive = true')
+      .getOne()
+
+    return department
   }
 
   async update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
 
-    const isRegistered = await this.findOne(id)
+    const isRegistered = await this.findActiveDepartment(id)
     if (!isRegistered) {
       throw new NotFoundException('O departamento não foi encontrado!!')
     }
@@ -89,10 +108,11 @@ export class DepartmentService {
   }
 
   async remove(id: number) {
-    const department = await this.findOne(id)
+    const department = await this.findActiveDepartment(id)
     if (!department) {
       throw new NotFoundException('O departamento não foi encontrado!!')
     }
-    return this.departmentRepository.remove(department)
+    department.isActive = false
+    return this.departmentRepository.save(department)
   }
 }

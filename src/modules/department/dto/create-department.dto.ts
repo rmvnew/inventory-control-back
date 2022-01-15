@@ -20,11 +20,6 @@ export class CreateDepartmentDto {
     @MinLength(5)
     manager: string
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsBoolean()
-    isActive: boolean
-
     @IsOptional()
     @IsString()
     createAt: string
