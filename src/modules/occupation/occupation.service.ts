@@ -79,7 +79,7 @@ export class OccupationService {
     return occ
   }
 
-  async findOccupationActive(id:number):Promise<Occupation>{
+  async findActiveOccupation(id:number):Promise<Occupation>{
 
     const occ = this.occRepository.createQueryBuilder('inf')
     .where('inf.id_occupation = :id_occupation',{id_occupation:id})
@@ -93,7 +93,7 @@ export class OccupationService {
   async update(id: number, updateOccupationDto: UpdateOccupationDto): Promise<Occupation> {
 
 
-    const occ = await this.findOccupationActive(id)
+    const occ = await this.findActiveOccupation(id)
     if (!occ) {
       throw new NotFoundException('Ocupação não encontrada!')
     }
@@ -111,7 +111,7 @@ export class OccupationService {
   }
 
   async remove(id: number) {
-    const occ = await this.findOne(id)
+    const occ = await this.findActiveOccupation(id)
     if (!occ) {
       throw new NotFoundException('Ocupação não encontrada!')
     }
