@@ -29,6 +29,8 @@ export class OccupationService {
       throw new BadRequestException('Ocupação já cadastrada!!')
     }
 
+    occupation.isActive = true
+
     return this.occRepository.save(occupation)
   }
 
@@ -38,21 +40,25 @@ export class OccupationService {
 
     if (name) {
       return paginate<Occupation>(
-        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` }), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` })
+        .andWhere('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+      .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+      .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.name', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+      .where('inf.isActive = true')
 
     }
 
@@ -64,10 +70,16 @@ export class OccupationService {
   }
 
   async findByName(name: string): Promise<Occupation> {
-    return this.occRepository.findOne({ name: name })
+
+    const occ = this.occRepository.createQueryBuilder('inf')
+    .where('inf.isActive = true')
+    .getOne()
+
+    return occ
   }
 
   async update(id: number, updateOccupationDto: UpdateOccupationDto): Promise<Occupation> {
+
 
     const occ = await this.findOne(id)
     if (!occ) {
@@ -79,6 +91,8 @@ export class OccupationService {
       ...updateOccupationDto
     })
 
+    occupation.name = Utils.getInstance().getValidName(occupation.name)
+
     await this.occRepository.save(occupation)
 
     return this.findOne(id)
@@ -89,6 +103,8 @@ export class OccupationService {
     if (!occ) {
       throw new NotFoundException('Ocupação não encontrada!')
     }
-    return this.occRepository.remove(occ)
+
+    occ.isActive = false
+    return this.occRepository.save(occ)
   }
 }
