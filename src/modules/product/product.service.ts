@@ -29,7 +29,7 @@ export class ProductService {
 
     product.name = Utils.getInstance().getValidName(product.name)
 
-    const isRegistered = this.findByName(product.name)
+    const isRegistered = await this.findByName(product.name)
 
     if (isRegistered) {
       throw new BadRequestException('O produto já esta cadastrado!!')
@@ -58,7 +58,7 @@ export class ProductService {
 
     if (name) {
       return paginate<Product>(
-        queryBuilder.where('inf.name = :name', { name: name }), filter
+        queryBuilder.where('inf.name like :name', {name: `%${name}%`} ), filter
       )
     }
 

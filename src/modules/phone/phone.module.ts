@@ -8,7 +8,7 @@ import { Phone } from './entities/phone.entity';
   imports: [
     TypeOrmModule.forFeature([Phone])
   ],
-  controllers: [PhoneController],
+  controllers: [],
   providers: [PhoneService],
   exports: [PhoneService]
 })

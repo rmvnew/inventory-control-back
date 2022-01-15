@@ -25,7 +25,9 @@ export class CategoryService {
 
     category.name = Utils.getInstance().getValidName(name)
 
-    const isRegistered = this.findByName(name)
+    const isRegistered = await this.findByName(name)
+
+    console.log(isRegistered)
 
     if (isRegistered) {
       throw new BadRequestException('Categoria já cadastrada!!')
@@ -42,7 +44,7 @@ export class CategoryService {
 
     if (name) {
       return paginate<Category>(
-        queryBuilder.where('inf.name = :name', { name: name }), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name}%` }), filter
       )
     }
 
