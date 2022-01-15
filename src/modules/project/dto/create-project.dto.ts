@@ -13,11 +13,6 @@ export class CreateProjectDto {
     @MinLength(5)
     name: string
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsBoolean()
-    isActive: boolean
-
     @IsOptional()
     @IsString()
     createAt: string

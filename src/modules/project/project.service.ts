@@ -28,6 +28,8 @@ export class ProjectService {
       throw new BadRequestException('Projeto já cadastrado!!!')
     }
 
+    project.isActive = true
+
     return this.projectRepository.save(project)
   }
 
@@ -37,21 +39,25 @@ export class ProjectService {
 
     if (name) {
       return paginate<Project>(
-        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` }), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` })
+          .andWhere('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.name', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     }
 
@@ -63,12 +69,24 @@ export class ProjectService {
   }
 
   async findByName(name: string): Promise<Project> {
-    return this.projectRepository.findOne({ name: name })
+    const project = this.projectRepository.createQueryBuilder('inf')
+      .where('inf.name = :name', { name })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return project
+  }
+
+  async findActiveProject(id: number): Promise<Project> {
+    const project = this.projectRepository.createQueryBuilder('inf')
+      .where('inf.id_project = :id_project', { id_project: id })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return project
   }
 
   async update(id: number, updateProjectDto: UpdateProjectDto): Promise<Project> {
 
-    const isRegistered = await this.findOne(id)
+    const isRegistered = await this.findActiveProject(id)
     if (!isRegistered) {
       throw new NotFoundException('Projeto não foi encontrado!!')
     }
@@ -78,15 +96,20 @@ export class ProjectService {
       ...updateProjectDto
     })
 
+    project.name = Utils.getInstance().getValidName(project.name)
+
     await this.projectRepository.save(project)
     return this.findOne(id)
   }
 
   async remove(id: number) {
-    const project = await this.findOne(id)
+    const project = await this.findActiveProject(id)
     if (!project) {
       throw new NotFoundException('Projeto não foi encontrado!!')
     }
-    return this.projectRepository.remove(project)
+
+    project.isActive = false
+
+    return this.projectRepository.save(project)
   }
 }
