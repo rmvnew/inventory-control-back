@@ -52,11 +52,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     permission: UserProfile
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsBoolean()
-    isActive: boolean
-
     @IsOptional()
     @IsString()
     createAt: string

@@ -44,6 +44,8 @@ export class UserService {
     user.department = await this.departmentService.findOne(id_department)
     user.occupation = await this.occupationService.findOne(id_occupation)
 
+    user.isActive = true
+
     return this.userRepository.save(user)
   }
 
@@ -51,26 +53,31 @@ export class UserService {
     const { name, orderBy, sort } = filter
     const queryBuilder = this.userRepository.createQueryBuilder('inf')
       .leftJoinAndSelect('inf.phone', 'phone')
-      .leftJoinAndSelect('inf.occupation','occupation')
-      .leftJoinAndSelect('inf.department','department')
+      .leftJoinAndSelect('inf.occupation', 'occupation')
+      .leftJoinAndSelect('inf.department', 'department')
+      .where('inf.isActive = true')
 
     if (name) {
       return paginate<User>(
-        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` }), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` })
+          .where('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.name', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     }
 
@@ -82,14 +89,26 @@ export class UserService {
   }
 
   async findByName(name: string): Promise<User> {
-    return this.userRepository.findOne({ name: name })
+    const user = this.userRepository.createQueryBuilder('inf')
+      .where('inf.name = :name', { name })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return user
+  }
+
+  async findActiveUser(id: number): Promise<User> {
+    const user = this.userRepository.createQueryBuilder('inf')
+      .where('inf.id_user = :id_user', { id_user: id })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return user
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
 
     const { password } = updateUserDto
 
-    const isRegistered = await this.findOne(id)
+    const isRegistered = await this.findActiveUser(id)
     if (!isRegistered) {
       throw new NotFoundException('Usuário não encontrado!!')
     }
@@ -110,10 +129,11 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = await this.findOne(id)
+    const user = await this.findActiveUser(id)
     if (!user) {
       throw new NotFoundException('Usuário não encontrado!!')
     }
-    return this.userRepository.remove(user)
+    user.isActive = false
+    return this.userRepository.save(user)
   }
 }
