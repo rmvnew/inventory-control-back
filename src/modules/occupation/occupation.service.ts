@@ -37,6 +37,7 @@ export class OccupationService {
   async findAll(filter: FilterOccupation): Promise<Pagination<Occupation>> {
     const { name, orderBy, sort } = filter
     const queryBuilder = this.occRepository.createQueryBuilder('inf')
+    .andWhere('inf.isActive = true')
 
     if (name) {
       return paginate<Occupation>(

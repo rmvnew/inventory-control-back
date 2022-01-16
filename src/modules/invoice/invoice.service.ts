@@ -42,7 +42,7 @@ export class InvoiceService {
   async findAll(filter: FilterInvoice): Promise<Pagination<Invoice>> {
     const { orderBy, sort, invoice_number, issuer_register } = filter
     const queryBuilder = this.invoiceRepository.createQueryBuilder('inf')
-      .leftJoinAndSelect('inf.product', 'product')
+      // .leftJoinAndSelect('inf.product', 'product')
       .where('inf.isActive = true')
 
 

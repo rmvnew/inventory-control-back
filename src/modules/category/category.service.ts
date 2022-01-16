@@ -41,7 +41,7 @@ export class CategoryService {
   async findAll(filter: FilterCategory): Promise<Pagination<Category>> {
     const { orderBy, sort, name } = filter
     const queryBuilder = this.categoryRepository.createQueryBuilder('inf')
-      .leftJoinAndSelect('inf.product', 'product')
+      // .leftJoinAndSelect('inf.product', 'product')
       .where('inf.isActive = true')
 
 

@@ -10,11 +10,6 @@ export class CreatePhoneDto {
     @IsNotEmpty()
     phone_number: string
 
-    @ApiProperty()
-    @IsBoolean()
-    @IsNotEmpty()
-    isActive: boolean
-
     @IsString()
     @IsOptional()
     createAt: string

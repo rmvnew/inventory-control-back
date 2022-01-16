@@ -37,7 +37,8 @@ export class DepartmentService {
   async findAll(filter: FilterDepartment): Promise<Pagination<Department>> {
     const { name, orderBy, sort } = filter
     const queryBuilder = this.departmentRepository.createQueryBuilder('inf')
-      .leftJoinAndSelect('inf.client', 'client')
+      // .leftJoinAndSelect('inf.client', 'client')
+      .andWhere('inf.isActive = true')
 
     if (name) {
       return paginate<Department>(

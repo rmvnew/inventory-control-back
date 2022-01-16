@@ -29,6 +29,8 @@ export class PhoneService {
     //   throw new BadRequestException('Telefone já cadastrado!')
     // }
 
+    phone.isActive = true
+
     return this.phoneRepository.save(phone)
   }
 
@@ -38,7 +40,7 @@ export class PhoneService {
 
     const { orderBy, sort, phone_number } = filter
     const queryBuilder = this.phoneRepository.createQueryBuilder('inf')
-    .leftJoinAndSelect('inf.user','user')
+    // .leftJoinAndSelect('inf.user','user')
 
     if (phone_number) {
       return paginate<Phone>(
