@@ -33,6 +33,8 @@ export class CategoryService {
       throw new BadRequestException('Categoria já cadastrada!!')
     }
 
+    category.isActive = true
+
     return this.categoryRepository.save(category)
   }
 
@@ -40,25 +42,30 @@ export class CategoryService {
     const { orderBy, sort, name } = filter
     const queryBuilder = this.categoryRepository.createQueryBuilder('inf')
       .leftJoinAndSelect('inf.product', 'product')
+      .where('inf.isActive = true')
 
 
     if (name) {
       return paginate<Category>(
-        queryBuilder.where('inf.name like :name', { name: `%${name}%` }), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name}%` })
+          .where('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.name', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     }
 
@@ -70,12 +77,25 @@ export class CategoryService {
   }
 
   async findByName(name: string): Promise<Category> {
-    return this.categoryRepository.findOne({ name: name })
+
+    const category = this.categoryRepository.createQueryBuilder('inf')
+      .where('inf.name = :name', { name: name })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return category
+  }
+
+  async findActiveCategory(id: number): Promise<Category> {
+    const category = this.categoryRepository.createQueryBuilder('inf')
+      .where('inf.id_category = :id_category', { id_category: id })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return category
   }
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
 
-    const isRegistered = await this.findOne(id)
+    const isRegistered = await this.findActiveCategory(id)
     if (!isRegistered) {
       throw new NotFoundException('Nenhuma categoria encontrada!')
     }
@@ -93,10 +113,11 @@ export class CategoryService {
   }
 
   async remove(id: number) {
-    const category = await this.findOne(id)
+    const category = await this.findActiveCategory(id)
     if (!category) {
       throw new NotFoundException('Nenhuma categoria encontrada!')
     }
-    return this.categoryRepository.remove(category)
+    category.isActive = false
+    return this.categoryRepository.save(category)
   }
 }

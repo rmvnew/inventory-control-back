@@ -13,11 +13,6 @@ export class CreateCategoryDto {
     @MinLength(5)
     name: string
 
-    @ApiProperty()
-    @IsBoolean()
-    @IsNotEmpty()
-    isActive: boolean
-
     @IsString()
     @IsOptional()
     createAt: string
