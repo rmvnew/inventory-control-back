@@ -32,10 +32,6 @@ export class CreateInvoiceDto {
     @IsNotEmpty()
     value: number;
 
-    @ApiProperty()
-    @IsBoolean()
-    isActive: boolean
-
     @IsOptional()
     @IsString()
     createAt: string
