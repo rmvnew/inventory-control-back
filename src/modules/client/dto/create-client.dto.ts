@@ -30,11 +30,6 @@ export class CreateClientDto {
     @IsNumber()
     id_department: number
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsBoolean()
-    isActive: boolean
-
     @IsOptional()
     @IsString()
     createAt: string
