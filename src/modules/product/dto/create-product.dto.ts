@@ -70,11 +70,6 @@ export class CreateProductDto {
     @IsNotEmpty()
     institute_code: string
 
-    @ApiProperty()
-    @IsBoolean()
-    @IsNotEmpty()
-    isActive: boolean
-
     @IsString()
     @IsOptional()
     createAt: string

@@ -43,6 +43,8 @@ export class ProductService {
       product.category = await this.categoryService.findOne(id_category)
     }
 
+    product.isActive = true
+
     return this.prodRepository.save(product)
   }
 
@@ -53,32 +55,38 @@ export class ProductService {
     const { orderBy, sort, name, barcode } = filter
     const queryBuilder = this.prodRepository.createQueryBuilder('inf')
       .leftJoinAndSelect('inf.invoice', 'invoice')
-      .leftJoinAndSelect('inf.category','category')
+      .leftJoinAndSelect('inf.category', 'category')
+      .where('inf.isActive = true')
 
 
     if (name) {
       return paginate<Product>(
-        queryBuilder.where('inf.name like :name', {name: `%${name}%`} ), filter
+        queryBuilder.where('inf.name like :name', { name: `%${name}%` })
+          .where('inf.isActive = true'), filter
       )
     }
 
     if (barcode) {
       return paginate<Product>(
-        queryBuilder.where('inf.barcode = :barcode', { barcode: barcode }), filter
+        queryBuilder.where('inf.barcode = :barcode', { barcode: barcode })
+          .where('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.name', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     }
 
@@ -90,14 +98,28 @@ export class ProductService {
   }
 
   async findByName(name: string): Promise<Product> {
-    return this.prodRepository.findOne({ name: name })
+    const product = this.prodRepository.createQueryBuilder('inf')
+      .where('inf.name = :name', { name })
+      .andWhere('inf.isActive = true')
+      .getOne()
+
+    return product
+  }
+
+  async findActiveProduct(id: number): Promise<Product> {
+    const product = this.prodRepository.createQueryBuilder('inf')
+      .where('inf.id_product = :id_product', { id_product: id })
+      .andWhere('inf.isActive = true')
+      .getOne()
+
+    return product
   }
 
   async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
 
     const { name, id_invoice, id_category } = updateProductDto
 
-    const isRegistered = this.findOne(id)
+    const isRegistered = this.findActiveProduct(id)
     if (!isRegistered) {
       throw new NotFoundException('Produto não encontrado!!')
     }
@@ -130,6 +152,8 @@ export class ProductService {
       throw new NotFoundException('Produto não encontrado!!')
     }
 
-    return this.prodRepository.remove(product)
+    product.isActive = true
+
+    return this.prodRepository.save(product)
   }
 }
