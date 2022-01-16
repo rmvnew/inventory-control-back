@@ -37,6 +37,8 @@ export class ActivityControlService {
     activity.product = await this.productService.findOne(id_product)
     activity.project = await this.projectService.findOne(id_project)
 
+    activity.isActive = true
+
 
     return this.caRepositoty.save(activity)
   }
@@ -44,25 +46,30 @@ export class ActivityControlService {
   async findAll(filter: FilterActitivityControl): Promise<Pagination<ActivityControl>> {
     const { orderBy, sort, moviment } = filter
     const queryBuilder = this.caRepositoty.createQueryBuilder('inf')
+      .where('inf.isActive = true')
 
 
     if (moviment) {
       return paginate<ActivityControl>(
-        queryBuilder.where('inf.moviment = :moviment', { moviment: moviment }), filter
+        queryBuilder.where('inf.moviment = :moviment', { moviment: moviment })
+          .where('inf.isActive = true'), filter
       )
     }
 
     if (orderBy == SortingType.ID) {
 
       queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     } else {
 
       queryBuilder.orderBy('inf.moviment', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
 
     }
 
@@ -74,14 +81,26 @@ export class ActivityControlService {
   }
 
   async findByMoviment(moviment: number): Promise<ActivityControl> {
-    return this.caRepositoty.findOne({ moviment: moviment })
+    const activity = this.caRepositoty.createQueryBuilder('inf')
+      .where('inf.moviment = :moviment', { moviment })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return activity
+  }
+
+  async findActiveActivity(id: number): Promise<ActivityControl> {
+    const activity = this.caRepositoty.createQueryBuilder('inf')
+      .where('inf.id_activity_control = :id_activity_control', { id_activity_control: id })
+      .andWhere('inf.isActive = true')
+      .getOne()
+    return activity
   }
 
   async update(id: number, updateActivityControlDto: UpdateActivityControlDto): Promise<ActivityControl> {
 
     const { id_client, id_product, id_project } = updateActivityControlDto
 
-    const isRegistered = await this.findOne(id)
+    const isRegistered = await this.findActiveActivity(id)
     if (!isRegistered) {
       throw new NotFoundException('Movimento não encontrado!')
     }
@@ -108,10 +127,11 @@ export class ActivityControlService {
 
   async remove(id: number) {
 
-    const activity = await this.findOne(id)
+    const activity = await this.findActiveActivity(id)
     if (!activity) {
       throw new NotFoundException('Movimento não encontrado!')
     }
-    return this.caRepositoty.remove(activity)
+    activity.isActive = false
+    return this.caRepositoty.save(activity)
   }
 }

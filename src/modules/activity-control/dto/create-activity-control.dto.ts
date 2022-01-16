@@ -36,10 +36,6 @@ export class CreateActivityControlDto {
     @IsString()
     return_date: string
 
-    @ApiProperty()
-    @IsBoolean()
-    isActive: boolean
-
     @IsOptional()
     @IsString()
     createAt: string
