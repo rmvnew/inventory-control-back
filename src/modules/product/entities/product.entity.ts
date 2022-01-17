@@ -1,5 +1,6 @@
 import { ActivityControl } from "src/modules/activity-control/entities/activity-control.entity";
 import { Category } from "src/modules/category/entities/category.entity";
+import { Department } from "src/modules/department/entities/department.entity";
 import { Invoice } from "src/modules/invoice/entities/invoice.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -33,10 +34,7 @@ export class Product {
 
     @Column('decimal', { precision: 7, scale: 2 })
     value: number
-
-    @Column()
-    responsible: string
-
+   
     @Column()
     location: string
 
@@ -57,6 +55,9 @@ export class Product {
 
     @ManyToOne(() => Category, category => category.product)
     category: Category
+
+    @ManyToOne(()=> Department, department => department.product)
+    department:Department
 
     @OneToMany(() => ActivityControl, activity => activity.client)
     activity: ActivityControl[]

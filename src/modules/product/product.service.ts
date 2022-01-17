@@ -5,6 +5,7 @@ import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
+import { DepartmentService } from '../department/department.service';
 import { InvoiceService } from '../invoice/invoice.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { FilterProduct } from './dto/filter.product.pagination';
@@ -18,12 +19,13 @@ export class ProductService {
     @InjectRepository(Product)
     private readonly prodRepository: Repository<Product>,
     private invoiceService: InvoiceService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private departmentService: DepartmentService
   ) { }
 
   async create(createProductDto: CreateProductDto) {
 
-    const { id_invoice, id_category } = createProductDto
+    const { id_invoice, id_category, id_department } = createProductDto
 
     const product = this.prodRepository.create(createProductDto)
 
@@ -43,6 +45,10 @@ export class ProductService {
       product.category = await this.categoryService.findOne(id_category)
     }
 
+    if (id_department) {
+      product.department = await this.departmentService.findOne(id_department)
+    }
+
     product.isActive = true
 
     return this.prodRepository.save(product)
@@ -56,6 +62,7 @@ export class ProductService {
     const queryBuilder = this.prodRepository.createQueryBuilder('inf')
       .leftJoinAndSelect('inf.invoice', 'invoice')
       .leftJoinAndSelect('inf.category', 'category')
+      .leftJoinAndSelect('inf.department', 'department')
       .where('inf.isActive = true')
 
 
