@@ -28,6 +28,11 @@ export class CategoryController {
     return this.categoryService.findAll(filter);
   }
 
+  @Get('/all')
+  async findAllCategory():Promise<Category[]>{
+    return this.categoryService.findAllCategory()
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.categoryService.findOne(+id);

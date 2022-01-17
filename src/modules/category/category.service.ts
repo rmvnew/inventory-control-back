@@ -72,6 +72,13 @@ export class CategoryService {
     return paginate<Category>(queryBuilder, filter)
   }
 
+  async findAllCategory(): Promise<Category[]> {
+    const all = this.categoryRepository.createQueryBuilder('inf')
+      .where('inf.isActive = true')
+      .getMany()
+    return all
+  }
+
   async findOne(id: number): Promise<Category> {
     return this.categoryRepository.findOne({ id_category: id })
   }

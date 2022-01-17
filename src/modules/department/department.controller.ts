@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Pagination } from 'nestjs-typeorm-paginate';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { FilterDepartment } from './dto/filter.department.pagination';
@@ -20,12 +21,19 @@ export class DepartmentController {
   @Get()
   async findAll(
     @Query() filter: FilterDepartment
-  ) {
+  ):Promise<Pagination<Department>> {
     const { limit } = filter
 
     filter.limit = limit > 10 ? 10 : limit;
 
     return this.departmentService.findAll(filter);
+  }
+
+  @Get('/all')
+  async findAllDepartment():Promise<Department[]>{
+
+    return this.departmentService.findAllDepartment()
+    
   }
 
   @Get(':id')

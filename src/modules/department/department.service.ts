@@ -12,6 +12,7 @@ import { Department } from './entities/department.entity';
 @Injectable()
 export class DepartmentService {
 
+
   constructor(
     @InjectRepository(Department)
     private readonly departmentRepository: Repository<Department>
@@ -32,6 +33,16 @@ export class DepartmentService {
     department.isActive = true
 
     return this.departmentRepository.save(department)
+  }
+
+  async findAllDepartment(): Promise<Department[]> {
+
+    const all = this.departmentRepository.createQueryBuilder('inf')
+      .where('inf.isActive = true')
+      .getMany()
+
+    return all
+
   }
 
   async findAll(filter: FilterDepartment): Promise<Pagination<Department>> {
