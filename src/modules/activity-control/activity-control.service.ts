@@ -34,7 +34,7 @@ export class ActivityControlService {
     }
 
     activity.client = await this.clientService.findOne(id_client)
-    activity.product = await this.productService.findOne(id_product)
+    // activity.product = await this.productService.findOne(id_product)
     activity.project = await this.projectService.findOne(id_project)
 
     activity.isActive = true
@@ -113,9 +113,9 @@ export class ActivityControlService {
     if (id_client) {
       activity.client = await this.clientService.findOne(id_client)
     }
-    if (id_product) {
-      activity.product = await this.productService.findOne(id_product)
-    }
+    // if (id_product) {
+    //   activity.product = await this.productService.findOne(id_product)
+    // }
     if (id_project) {
       activity.project = await this.projectService.findOne(id_project)
     }

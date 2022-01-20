@@ -7,18 +7,10 @@ import { IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } fro
 export class CreateProjectDto {
 
     @ApiProperty()
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(100)
-    @MinLength(5)
     name: string
 
-    @IsOptional()
-    @IsString()
     createAt: string
 
-    @IsOptional()
-    @IsString()
     updateAt: string
 
 }

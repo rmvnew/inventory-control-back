@@ -25,7 +25,7 @@ export class ProductService {
 
   async create(createProductDto: CreateProductDto) {
 
-    const { id_invoice, id_category, id_department } = createProductDto
+    const { invoice_number, id_category, id_department } = createProductDto
 
     const product = this.prodRepository.create(createProductDto)
 
@@ -37,8 +37,8 @@ export class ProductService {
       throw new BadRequestException('O produto já esta cadastrado!!')
     }
 
-    if (id_invoice) {
-      product.invoice = await this.invoiceService.findOne(id_invoice)
+    if (invoice_number) {
+      product.invoice = await this.invoiceService.findByNumber(invoice_number)
     }
 
     if (id_category) {
@@ -124,7 +124,7 @@ export class ProductService {
 
   async update(id: number, updateProductDto: UpdateProductDto): Promise<Product> {
 
-    const { name, id_invoice, id_category } = updateProductDto
+    const { name, invoice_number, id_category } = updateProductDto
 
     const isRegistered = this.findActiveProduct(id)
     if (!isRegistered) {
@@ -140,8 +140,8 @@ export class ProductService {
       product.name = Utils.getInstance().getValidName(product.name)
     }
 
-    if (id_invoice) {
-      product.invoice = await this.invoiceService.findOne(id_invoice)
+    if (invoice_number) {
+      product.invoice = await this.invoiceService.findByNumber(invoice_number)
     }
 
     if (id_category) {
