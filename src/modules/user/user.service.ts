@@ -96,6 +96,17 @@ export class UserService {
     return user
   }
 
+  async findByEmail(email: string): Promise<User> {
+
+    const user = await this.userRepository.createQueryBuilder('inf')
+      .where('inf.email = :email', { email })
+      .andWhere('inf.isActive = true')
+      .getOne()
+
+    return user
+
+  }
+
   async findActiveUser(id: number): Promise<User> {
     const user = this.userRepository.createQueryBuilder('inf')
       .where('inf.id_user = :id_user', { id_user: id })

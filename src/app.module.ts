@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { OccupationModule } from './modules/occupation/occupation.module';
 import { DepartmentModule } from './modules/department/department.module';
@@ -14,8 +15,9 @@ import { ActivityControlModule } from './modules/activity-control/activity-contr
 
 @Module({
   imports: [
-    ConfigModule.forRoot(), 
-    OccupationModule, 
+    AuthModule,
+    ConfigModule.forRoot(),
+    OccupationModule,
     DepartmentModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -36,7 +38,7 @@ import { ActivityControlModule } from './modules/activity-control/activity-contr
     PhoneModule,
     ActivityControlModule,
   ],
-    
+
   controllers: [],
   providers: [],
 })
