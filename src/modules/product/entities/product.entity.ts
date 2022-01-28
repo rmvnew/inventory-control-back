@@ -59,6 +59,9 @@ export class Product {
     @ManyToOne(()=> Department, department => department.product)
     department:Department
 
+    @OneToMany(() => ActivityControl, active=> active.product)
+    active: Product[]
+
 
 
 }

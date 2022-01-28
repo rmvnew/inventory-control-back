@@ -1,4 +1,5 @@
 import { Client } from "src/modules/client/entities/client.entity";
+import { Product } from "src/modules/product/entities/product.entity";
 import { Project } from "src/modules/project/entities/project.entity";
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
@@ -24,7 +25,7 @@ export class ActivityControl {
 
     @Column()
     isActive: boolean
-
+    I
     @CreateDateColumn()
     createAt: string
 
@@ -37,7 +38,8 @@ export class ActivityControl {
     @ManyToOne(() => Project, project => project.activity)
     project: Project
 
-   
+    @ManyToOne(() => Product, product => product.active)
+    product: Product
 
 }
 

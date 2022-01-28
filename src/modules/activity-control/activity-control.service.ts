@@ -34,7 +34,7 @@ export class ActivityControlService {
     }
 
     activity.client = await this.clientService.findOne(id_client)
-    // activity.product = await this.productService.findOne(id_product)
+    activity.product = await this.productService.findOne(id_product)
     activity.project = await this.projectService.findOne(id_project)
 
     activity.isActive = true
@@ -46,6 +46,7 @@ export class ActivityControlService {
   async findAll(filter: FilterActitivityControl): Promise<Pagination<ActivityControl>> {
     const { orderBy, sort, moviment } = filter
     const queryBuilder = this.caRepositoty.createQueryBuilder('inf')
+      .leftJoinAndSelect('inf.product', 'product')
       .where('inf.isActive = true')
 
 
