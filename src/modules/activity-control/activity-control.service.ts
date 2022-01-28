@@ -52,7 +52,7 @@ export class ActivityControlService {
     if (moviment) {
       return paginate<ActivityControl>(
         queryBuilder.where('inf.moviment = :moviment', { moviment: moviment })
-          .where('inf.isActive = true'), filter
+          .andWhere('inf.isActive = true'), filter
       )
     }
 

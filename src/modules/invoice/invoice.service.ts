@@ -49,7 +49,7 @@ export class InvoiceService {
     if (invoice_number) {
       return paginate<Invoice>(
         queryBuilder.where('inf.invoice_number = :invoice_number', { invoice_number: invoice_number })
-          .where('inf.isActive = true'), filter
+          .andWhere('inf.isActive = true'), filter
       )
     }
 

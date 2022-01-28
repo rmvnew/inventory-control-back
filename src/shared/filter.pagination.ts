@@ -4,15 +4,15 @@ import { ApiProperty } from "@nestjs/swagger"
 
 export class FilterPagination {
 
-    @ApiProperty({ required: true, default: 1 })
+    @ApiProperty({ required: false, default: 1 })
     page: number
 
-    @ApiProperty({ required: true, default: 10 })
+    @ApiProperty({ required: false, default: 10 })
     limit: number
 
-    @ApiProperty({ required: true, default: 'DESC', enum: ['ASC', 'DESC'] })
+    @ApiProperty({ required: false, default: 'DESC', enum: ['ASC', 'DESC'] })
     sort: string
 
-    @ApiProperty({ required: true, default: 'NAME', enum: ['ID', 'NAME', 'DATE'] })
+    @ApiProperty({ required: false, default: 'NAME', enum: ['ID', 'NAME', 'DATE'] })
     orderBy: string
 }

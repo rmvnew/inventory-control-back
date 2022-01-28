@@ -69,14 +69,14 @@ export class ProductService {
     if (name) {
       return paginate<Product>(
         queryBuilder.where('inf.name like :name', { name: `%${name}%` })
-          .where('inf.isActive = true'), filter
+          .andWhere('inf.isActive = true'), filter
       )
     }
 
     if (barcode) {
       return paginate<Product>(
         queryBuilder.where('inf.barcode = :barcode', { barcode: barcode })
-          .where('inf.isActive = true'), filter
+          .andWhere('inf.isActive = true'), filter
       )
     }
 

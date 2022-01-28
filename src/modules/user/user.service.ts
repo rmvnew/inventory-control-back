@@ -60,7 +60,7 @@ export class UserService {
     if (name) {
       return paginate<User>(
         queryBuilder.where('inf.name like :name', { name: `%${name.toUpperCase()}%` })
-          .where('inf.isActive = true'), filter
+          .andWhere('inf.isActive = true'), filter
       )
     }
 

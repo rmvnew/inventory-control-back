@@ -48,7 +48,7 @@ export class CategoryService {
     if (name) {
       return paginate<Category>(
         queryBuilder.where('inf.name like :name', { name: `%${name}%` })
-          .where('inf.isActive = true'), filter
+          .andWhere('inf.isActive = true'), filter
       )
     }
 
