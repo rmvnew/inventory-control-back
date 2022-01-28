@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { FilterCategory } from './dto/filter.category.pagination';
+import { FilterCategory } from './dto/filter.category';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 

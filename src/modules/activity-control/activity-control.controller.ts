@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ActivityControlService } from './activity-control.service';
 import { CreateActivityControlDto } from './dto/create-activity-control.dto';
-import { FilterActitivityControl } from './dto/filter.ac.pagination';
+import { FilterActitivityControl } from './dto/filter.ac';
 import { UpdateActivityControlDto } from './dto/update-activity-control.dto';
 import { ActivityControl } from './entities/activity-control.entity';
 

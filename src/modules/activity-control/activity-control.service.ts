@@ -7,7 +7,7 @@ import { ClientService } from '../client/client.service';
 import { ProductService } from '../product/product.service';
 import { ProjectService } from '../project/project.service';
 import { CreateActivityControlDto } from './dto/create-activity-control.dto';
-import { FilterActitivityControl } from './dto/filter.ac.pagination';
+import { FilterActitivityControl } from './dto/filter.ac';
 import { UpdateActivityControlDto } from './dto/update-activity-control.dto';
 import { ActivityControl } from './entities/activity-control.entity';
 

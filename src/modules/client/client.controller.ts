@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
-import { FilterClient } from './dto/filter.client.pagination';
+import { FilterClient } from './dto/filter.client';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
 import { JwtAuthGuard } from '../../auth/shared/jwt-auth.guard'

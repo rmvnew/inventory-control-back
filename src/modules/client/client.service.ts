@@ -7,7 +7,7 @@ import { Repository } from 'typeorm';
 import { DepartmentService } from '../department/department.service';
 import { OccupationService } from '../occupation/occupation.service';
 import { CreateClientDto } from './dto/create-client.dto';
-import { FilterClient } from './dto/filter.client.pagination';
+import { FilterClient } from './dto/filter.client';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { Client } from './entities/client.entity';
 

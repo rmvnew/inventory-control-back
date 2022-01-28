@@ -5,7 +5,7 @@ import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateDepartmentDto } from './dto/create-department.dto';
-import { FilterDepartment } from './dto/filter.department.pagination';
+import { FilterDepartment } from './dto/filter.department';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { Department } from './entities/department.entity';
 

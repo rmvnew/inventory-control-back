@@ -8,7 +8,7 @@ import { CategoryService } from '../category/category.service';
 import { DepartmentService } from '../department/department.service';
 import { InvoiceService } from '../invoice/invoice.service';
 import { CreateProductDto } from './dto/create-product.dto';
-import { FilterProduct } from './dto/filter.product.pagination';
+import { FilterProduct } from './dto/filter.product';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 

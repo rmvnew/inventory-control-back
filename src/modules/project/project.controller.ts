@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { FilterProject } from './dto/filter.project.pagination';
+import { FilterProject } from './dto/filter.project';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Project } from './entities/project.entity';
 import { ApiTags } from '@nestjs/swagger';

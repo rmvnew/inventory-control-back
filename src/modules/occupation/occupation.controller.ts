@@ -3,7 +3,7 @@ import { OccupationService } from './occupation.service';
 import { CreateOccupationDto } from './dto/create-occupation.dto';
 import { UpdateOccupationDto } from './dto/update-occupation.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { FilterOccupation } from './dto/filter.occupation.pagination';
+import { FilterOccupation } from './dto/filter.occupation';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Occupation } from './entities/occupation.entity';
 

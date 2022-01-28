@@ -5,7 +5,7 @@ import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { FilterCategory } from './dto/filter.category.pagination';
+import { FilterCategory } from './dto/filter.category';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 

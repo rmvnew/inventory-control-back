@@ -5,7 +5,7 @@ import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateOccupationDto } from './dto/create-occupation.dto';
-import { FilterOccupation } from './dto/filter.occupation.pagination';
+import { FilterOccupation } from './dto/filter.occupation';
 import { UpdateOccupationDto } from './dto/update-occupation.dto';
 import { Occupation } from './entities/occupation.entity';
 

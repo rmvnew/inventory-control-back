@@ -5,7 +5,7 @@ import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateProjectDto } from './dto/create-project.dto';
-import { FilterProject } from './dto/filter.project.pagination';
+import { FilterProject } from './dto/filter.project';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 

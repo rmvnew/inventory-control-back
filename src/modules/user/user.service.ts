@@ -8,7 +8,7 @@ import { DepartmentService } from '../department/department.service';
 import { OccupationService } from '../occupation/occupation.service';
 import { PhoneService } from '../phone/phone.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { FilterUser } from './dto/filter.user.pagination';
+import { FilterUser } from './dto/filter.user';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 

@@ -5,7 +5,7 @@ import { SortingType } from 'src/helper/Enums';
 import { Utils } from 'src/helper/Utils';
 import { Repository } from 'typeorm';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
-import { FilterInvoice } from './dto/filter.invoice.pagination';
+import { FilterInvoice } from './dto/filter.invoice';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
 

@@ -3,7 +3,7 @@ import { PhoneService } from './phone.service';
 import { CreatePhoneDto } from './dto/create-phone.dto';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { Phone } from './entities/phone.entity';
-import { FilterPhone } from './dto/filter.phone.pagination';
+import { FilterPhone } from './dto/filter.phone';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FilterUser } from './dto/filter.user.pagination';
+import { FilterUser } from './dto/filter.user';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { User } from './entities/user.entity';
 import { ApiTags } from '@nestjs/swagger';

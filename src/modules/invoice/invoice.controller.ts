@@ -3,7 +3,7 @@ import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { UpdateInvoiceDto } from './dto/update-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
-import { FilterInvoice } from './dto/filter.invoice.pagination';
+import { FilterInvoice } from './dto/filter.invoice';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { ApiTags } from '@nestjs/swagger';
 

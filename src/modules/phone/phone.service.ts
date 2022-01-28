@@ -4,7 +4,7 @@ import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
 import { Repository } from 'typeorm';
 import { CreatePhoneDto } from './dto/create-phone.dto';
-import { FilterPhone } from './dto/filter.phone.pagination';
+import { FilterPhone } from './dto/filter.phone';
 import { UpdatePhoneDto } from './dto/update-phone.dto';
 import { Phone } from './entities/phone.entity';
 
