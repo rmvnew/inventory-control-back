@@ -87,7 +87,7 @@ export class PhoneService {
 
     await this.phoneRepository.save(phone)
 
-    return this.findOne(id)
+    return await this.findOne(id)
   }
 
   async remove(id: number) {

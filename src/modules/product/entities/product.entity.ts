@@ -1,3 +1,4 @@
+import { Material } from "src/material/entities/material.entity";
 import { ActivityControl } from "src/modules/activity-control/entities/activity-control.entity";
 import { Category } from "src/modules/category/entities/category.entity";
 import { Department } from "src/modules/department/entities/department.entity";
@@ -59,8 +60,8 @@ export class Product {
     @ManyToOne(()=> Department, department => department.product)
     department:Department
 
-    @OneToMany(() => ActivityControl, active=> active.product)
-    active: Product[]
+    @OneToMany(() => Material, material=> material.product)
+    material:Material
 
 
 

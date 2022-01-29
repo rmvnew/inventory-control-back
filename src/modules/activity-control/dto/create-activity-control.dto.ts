@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
+import { CreateMaterialDto } from "src/material/dto/create-material.dto"
 
 
 
@@ -10,20 +11,8 @@ export class CreateActivityControlDto {
     @ApiProperty()
     id_project: number
 
-    @ApiProperty()
-    id_product: number
-
-    @ApiProperty()
-    moviment: number
-
-    @ApiProperty()
-    quantity: number
-
-    @ApiProperty()
-    date_of_withdrawal: string
-
-    @ApiProperty()
-    return_date: string
+    // @ApiProperty()
+    // moviment: number
 
     createAt: string
 

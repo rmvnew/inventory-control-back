@@ -4,7 +4,6 @@ import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
 import { Repository } from 'typeorm';
 import { ClientService } from '../client/client.service';
-import { ProductService } from '../product/product.service';
 import { ProjectService } from '../project/project.service';
 import { CreateActivityControlDto } from './dto/create-activity-control.dto';
 import { FilterActitivityControl } from './dto/filter.ac';
@@ -19,22 +18,25 @@ export class ActivityControlService {
     private readonly caRepositoty: Repository<ActivityControl>,
     private clientService: ClientService,
     private projectService: ProjectService,
-    private productService: ProductService
   ) { }
 
   async create(createActivityControlDto: CreateActivityControlDto) {
 
-    const { id_client, id_product, id_project } = createActivityControlDto
+    const { id_client, id_project } = createActivityControlDto
 
     const activity = this.caRepositoty.create(createActivityControlDto)
 
+    const newMoviment = await this.getNewMoviment()
+
+    activity.moviment = newMoviment
+
     const isRegistered = this.findByMoviment(activity.moviment)
-    if (isRegistered) {
+
+    if (isRegistered == undefined) {
       throw new BadRequestException('Movimento já registrado!!')
     }
 
     activity.client = await this.clientService.findOne(id_client)
-    activity.product = await this.productService.findOne(id_product)
     activity.project = await this.projectService.findOne(id_project)
 
     activity.isActive = true
@@ -43,12 +45,24 @@ export class ActivityControlService {
     return this.caRepositoty.save(activity)
   }
 
+  async getNewMoviment(){
+    const active = await this.caRepositoty.createQueryBuilder('inf')
+    .select('MAX(inf.moviment)','max')
+    .getRawOne()
+
+    const moviment = active['max'] + 1
+
+    console.log(moviment)
+
+    return moviment
+
+  }
+
   async findAll(filter: FilterActitivityControl): Promise<Pagination<ActivityControl>> {
     const { orderBy, sort, moviment } = filter
     const queryBuilder = this.caRepositoty.createQueryBuilder('inf')
       .leftJoinAndSelect('inf.product', 'product')
       .where('inf.isActive = true')
-
 
     if (moviment) {
       return paginate<ActivityControl>(
@@ -59,7 +73,7 @@ export class ActivityControlService {
 
     if (orderBy == SortingType.ID) {
 
-      queryBuilder.orderBy('inf.iduser', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+      queryBuilder.orderBy('inf.id_client', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
         .where('inf.isActive = true')
 
     } else if (orderBy == SortingType.DATE) {
@@ -82,10 +96,11 @@ export class ActivityControlService {
   }
 
   async findByMoviment(moviment: number): Promise<ActivityControl> {
-    const activity = this.caRepositoty.createQueryBuilder('inf')
+    const activity = await this.caRepositoty.createQueryBuilder('inf')
       .where('inf.moviment = :moviment', { moviment })
       .andWhere('inf.isActive = true')
       .getOne()
+
     return activity
   }
 
@@ -99,7 +114,7 @@ export class ActivityControlService {
 
   async update(id: number, updateActivityControlDto: UpdateActivityControlDto): Promise<ActivityControl> {
 
-    const { id_client, id_product, id_project } = updateActivityControlDto
+    const { id_client, id_project } = updateActivityControlDto
 
     const isRegistered = await this.findActiveActivity(id)
     if (!isRegistered) {
@@ -114,9 +129,7 @@ export class ActivityControlService {
     if (id_client) {
       activity.client = await this.clientService.findOne(id_client)
     }
-    // if (id_product) {
-    //   activity.product = await this.productService.findOne(id_product)
-    // }
+
     if (id_project) {
       activity.project = await this.projectService.findOne(id_project)
     }
