@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { CreateMaterialDto } from "src/material/dto/create-material.dto"
+import { CreateMaterialDto } from "src/modules/material/dto/create-material.dto"
 
 
 

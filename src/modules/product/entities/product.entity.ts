@@ -1,4 +1,4 @@
-import { Material } from "src/material/entities/material.entity";
+import { Material } from "src/modules/material/entities/material.entity";
 import { ActivityControl } from "src/modules/activity-control/entities/activity-control.entity";
 import { Category } from "src/modules/category/entities/category.entity";
 import { Department } from "src/modules/department/entities/department.entity";

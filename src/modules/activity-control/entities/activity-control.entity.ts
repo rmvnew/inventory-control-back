@@ -1,4 +1,4 @@
-import { Material } from "src/material/entities/material.entity";
+import { Material } from "src/modules/material/entities/material.entity";
 import { Client } from "src/modules/client/entities/client.entity";
 import { Product } from "src/modules/product/entities/product.entity";
 import { Project } from "src/modules/project/entities/project.entity";
