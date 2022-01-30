@@ -1,4 +1,3 @@
-import { ApiProperty } from "@nestjs/swagger";
 import { ActivityControl } from "src/modules/activity-control/entities/activity-control.entity";
 import { Product } from "src/modules/product/entities/product.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";

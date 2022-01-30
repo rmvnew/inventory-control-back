@@ -7,6 +7,7 @@ import { ActivityControlService } from 'src/modules/activity-control/activity-co
 import { ProductService } from 'src/modules/product/product.service';
 import { Repository } from 'typeorm';
 import { CreateMaterialDto } from './dto/create-material.dto';
+import { FilterLoan } from './dto/filter.loan';
 import { FilterMaterial } from './dto/filter.material';
 import { UpdateMaterialDto } from './dto/update-material.dto';
 import { Material } from './entities/material.entity';
@@ -52,6 +53,7 @@ export class MaterialService {
 
     const queryBuilder = this.materialRepository.createQueryBuilder('inf')
       .leftJoinAndSelect('inf.activity', 'activity')
+      .leftJoinAndSelect('activity.client', 'client')
       .leftJoinAndSelect('inf.product', 'product')
       .where('inf.isActive = true')
 
@@ -59,7 +61,6 @@ export class MaterialService {
     if (id_client) {
       return paginate<Material>(
         queryBuilder
-          .leftJoinAndSelect('activity.client', 'client')
           .where('client.id_client = :id_client', { id_client })
           .andWhere('inf.isActive = true')
         , filter
@@ -94,6 +95,72 @@ export class MaterialService {
 
       queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
         .where('inf.isActive = true')
+
+    }
+
+    return paginate<Material>(queryBuilder, filter)
+
+  }
+
+  //emprestimo
+
+  async getAllLoan(filter: FilterLoan): Promise<Pagination<Material>> {
+
+
+    const { id_client, id_product, id_project, orderBy, sort } = filter
+
+    const loan = 'Emprestimo'
+
+    const queryBuilder = this.materialRepository.createQueryBuilder('inf')
+      .leftJoinAndSelect('inf.activity', 'activity')
+      .leftJoinAndSelect('activity.client', 'client')
+      .leftJoinAndSelect('inf.product', 'product')
+      .where('inf.isActive = true')
+      .andWhere('inf.operation_type = :operation_type', { operation_type: loan })
+
+
+    if (id_client) {
+      return paginate<Material>(
+        queryBuilder
+          .where('client.id_client = :id_client', { id_client })
+          .andWhere('inf.isActive = true')
+          .andWhere('inf.operation_type = :operation_type', { operation_type: loan })
+        , filter
+      )
+    }
+
+    if (id_product) {
+      return paginate<Material>(
+        queryBuilder
+          .where('product.id_product = :id_product', { id_product })
+          .andWhere('inf.isActive = true')
+          .andWhere('inf.operation_type = :operation_type', { operation_type: loan })
+        , filter
+      )
+    }
+
+    if (id_project) {
+      return paginate<Material>(
+        queryBuilder
+          .leftJoinAndSelect('activity.project', 'project')
+          .where('project.id_project = :id_project', { id_project })
+          .andWhere('inf.isActive = true')
+          .andWhere('inf.operation_type = :operation_type', { operation_type: loan })
+        , filter
+      )
+    }
+
+    if (orderBy == SortingType.ID) {
+
+      queryBuilder.orderBy('inf.id_material', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
+        .andWhere('inf.operation_type = :operation_type', { operation_type: loan })
+
+    } else {
+
+      queryBuilder.orderBy('inf.createAt', `${sort === 'DESC' ? 'DESC' : 'ASC'}`)
+        .where('inf.isActive = true')
+        .andWhere('inf.operation_type = :operation_type', { operation_type: loan })
 
     }
 
