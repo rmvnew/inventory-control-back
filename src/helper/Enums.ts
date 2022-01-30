@@ -13,11 +13,9 @@ export enum UserProfile {
     USUARIO = 'USUARIO'
 }
 
-export enum ProductCondition {
-    RECEBIDO = 'Recebido',
-    EM_ANALISE = 'Em análise',
-    EM_MANUTENCAO = 'Em manutenção',
-    PRONTO = 'Pronto',
-    CANCELADO = 'Cancelado',
-    ENTREGUE = 'Entregue'
+export enum OperationType {
+    CONSUMO = 'Consumo',
+    EMPRESTIMO = 'Emprestimo',
+    DEVOLUCAO = 'Devolução',
+   
 }

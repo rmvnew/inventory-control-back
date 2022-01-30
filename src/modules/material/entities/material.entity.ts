@@ -13,6 +13,9 @@ export class Material {
     quantity: number
 
     @Column()
+    operation_type: string  
+
+    @Column()
     isActive: boolean
 
     @CreateDateColumn()

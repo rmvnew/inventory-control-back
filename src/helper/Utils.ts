@@ -1,5 +1,6 @@
 import { BadRequestException } from "@nestjs/common";
 import * as bcrypt from 'bcrypt'
+import { OperationType } from "./Enums";
 
 
 export class Utils {
@@ -73,6 +74,19 @@ export class Utils {
         const year = currentDate[2]
         return new Date(`${year}/${month}/${day}`)
 
+    }
+
+    getOperation(type: OperationType) {
+
+        if (type == OperationType.CONSUMO) {
+            return 'Consumo'
+        } else if (type == OperationType.EMPRESTIMO) {
+            return 'Emprestimo'
+        } else if (type == OperationType.DEVOLUCAO) {
+            return 'Devolução'
+        } else {
+            throw new BadRequestException('Operação informada inválida!!')
+        }
     }
 
 }

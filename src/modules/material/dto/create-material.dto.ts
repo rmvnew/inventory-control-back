@@ -1,9 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { OperationType } from "src/helper/Enums";
 import { CreateActivityControlDto } from "src/modules/activity-control/dto/create-activity-control.dto";
-import { Product } from "src/modules/product/entities/product.entity";
 
 export class CreateMaterialDto {
 
+    @ApiProperty({ required: true, default: 'Consumo', enum: ['Consumo', 'Emprestimo', 'Devolução'] })
+    operation_type: OperationType
+    
     @ApiProperty()
     activity:CreateActivityControlDto
 
@@ -12,5 +15,6 @@ export class CreateMaterialDto {
 
     @ApiProperty()
     quantity: number
+
 
 }

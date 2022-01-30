@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { SortingType } from 'src/helper/Enums';
+import { Utils } from 'src/helper/Utils';
 import { ActivityControlService } from 'src/modules/activity-control/activity-control.service';
 import { ProductService } from 'src/modules/product/product.service';
 import { Repository } from 'typeorm';
@@ -22,7 +23,7 @@ export class MaterialService {
 
   async create(createMaterialDto: CreateMaterialDto) {
 
-    const { activity, id_product, quantity } = createMaterialDto
+    const { operation_type, activity, id_product, quantity } = createMaterialDto
 
     const material = this.materialRepository.create(createMaterialDto)
     const product = await this.productService.findOne(id_product)
@@ -30,6 +31,7 @@ export class MaterialService {
     material.isActive = true
     material.product = product
     material.activity = await this.activityService.create(activity)
+    material.operation_type = Utils.getInstance().getOperation(operation_type)
 
     if (product.quantity < quantity) {
       throw new BadRequestException("quantidade solicitada insuficiente!!")
@@ -124,13 +126,16 @@ export class MaterialService {
   }
 
   async remove(id: number) {
+
     const material = await this.findOne(id)
 
     if (!material) {
       throw new NotFoundException("Material não encontrado!!")
     }
 
-    return this.materialRepository.remove(material)
+    material.isActive = false
+
+    return this.materialRepository.save(material)
 
   }
 }
